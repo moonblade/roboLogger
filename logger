@@ -1,0 +1,16 @@
+#!/bin/bash
+# wget -p -R.js,.css,.gif "http://admin:p4ssword@192.168.1.1/cgi-bin/webproc?getpage=html/page.htm"
+file="page.html"
+# file="192.168.1.1/cgi-bin/webproc?getpage=html%2Fpage.htm&var:page=basic_home"
+restAPIUrl="http://localhost/workspace/bash/backend/Logger/updateData"
+outputFile="log.json"
+macListJson=$(
+printf "{\n"
+printf "\t\"macList\":[\n\t\t \"DU:MM:YA:DD:RE:SS\"\n"
+cat $file | grep -i '[0-9A-F]\{2\}\(:[0-9A-F]\{2\}\)\{5\}' | cut -f1 -d. | awk -F'"' '{ print "\t\t,\x22"$2"\x22" }'
+printf "\t]\n}"
+)
+macListJson=$(cat log.json)
+echo $macListJson
+rm -rf "192.168.1.1/" || true
+curl -v -H "Accept: application/json" -H "Content-type: application/json" -X POST -d "$macListJson" "$restAPIUrl"
