@@ -35,7 +35,8 @@ class Logger extends CI_Controller {
 	    			$this->db->insert('log',array('userMacId'=>$macAdded));
 	    		}
     		}
-    		$now=new DateTime();
+                $now=new DateTime();
+    		$now->add(new DateInterval('PT4H30M'));
     		$now = date_format($now, 'Y-m-d H:i:s');
     		if(isset($macsLeft))
     		{
@@ -45,11 +46,19 @@ class Logger extends CI_Controller {
 		    		$toChange=array('userLogoutTime'=>$now);
 		    		$toSearch=array('userMacId'=>$macLeft,'userLoginTime'=>$userLoginTime);
 		    		$this->db->update('log',$toChange,$toSearch);
-		            // if($this->db->affected_rows())
-		            // {
-		            	// print "success";
-		            // }
 	    		}
     		}
+        }
+
+        public function getPeopleAtTime($start=0,$end=0)
+        {
+		$startTime=new DateTime("@$start");
+                $startTime->add(new DateInterval('PT4H30M'));
+                $startTime = date_format($startTime, 'Y-m-d H:i:s');
+		$endTime=new DateTime("@$end");
+                $endTime->add(new DateInterval('PT4H30M'));
+                $endTime = date_format($endTime, 'Y-m-d H:i:s');
+                $query = $this->db->query('select name,userMacId,userLoginTime,userLogoutTime from log,loggerUsers where log.userMacId = loggerUsers.macId and not ((\''.$startTime.'\' < userLoginTime and \''.$endTime.'\' < userLogoutTime) || (\''.$startTime.'\' > userLoginTime and \''.$endTime.'\' > userLogoutTime))');
+                print json_encode($query->result());
         }
 }
