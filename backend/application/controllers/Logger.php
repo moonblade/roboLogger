@@ -16,8 +16,8 @@ class Logger extends CI_Controller {
     		$lastMacList=$this->db->get_where('rawTimeData',array('logTime'=>$maxTime))->row_array();
     		$this->db->insert('rawTimeData',array('macList'=>json_encode($macList)));
     		foreach ($macList as $macId) {
-    			if(!$this->db->get_where('users',array('macId'=>$macId))->row_array())
-    				$this->db->insert('users',array('macId'=>$macId));
+    			if(!$this->db->get_where('loggerUsers',array('macId'=>$macId))->row_array())
+    				$this->db->insert('loggerUsers',array('macId'=>$macId));
     		}
     		if($lastMacList)
     		{
