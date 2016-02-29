@@ -56,25 +56,25 @@ class Logger extends CI_Controller {
         	$endTime = $this->input->post('endDate');
                 $startTime = DateTime::createFromFormat('Y-m-d H:i:s',$startTime.' 00:00:00');
                 $endTime = DateTime::createFromFormat('Y-m-d H:i:s',$endTime.' 00:00:00');
-                $this->getPeopleAtTimeDateTime($startTime,$endTime);
+                print_r($this->getPeopleAtTimeDateTimePrint($startTime,$endTime));
         }
 
         public function getPeopleAtTimeEpoch($start=0,$end=0)
         {
                 $startTime=new DateTime("@$start");
                 $endTime=new DateTime("@$end");
-                $this->getPeopleAtTimeDateTime($startTime,$endTime);
+                print_r($this->getPeopleAtTimeDateTimePrint($startTime,$endTime));
         }
 
         public function getPeopleAtTimeDateTime($startTime,$endTime)
         {
-                $startTime->add(new DateInterval('PT4H30M'));
+	        $startTime->add(new DateInterval('PT4H30M'));
                 $startTime = date_format($startTime, 'Y-m-d H:i:s');
                 $endTime->add(new DateInterval('PT4H30M'));
                 $endTime = date_format($endTime, 'Y-m-d H:i:s');
                 $query = $this->db->query('select name,userMacId,userLoginTime,userLogoutTime from log,loggerUsers where log.userMacId = loggerUsers.macId and not ((\''.$startTime.'\' < userLoginTime and \''.$endTime.'\' < userLogoutTime) || (\''.$startTime.'\' > userLoginTime and \''.$endTime.'\' > userLogoutTime))');
                 header('Content-Type: application/json');
-                print_r(json_encode($query->result(),JSON_PRETTY_PRINT));
-
+                return json_encode($query->result(),JSON_PRETTY_PRINT);
+        
         }
 }
