@@ -1,0 +1,3 @@
+select name,userMacId,userLoginTime, REPLACE(userLogoutTime,"0000-00-00 00:00:00",DATE_ADD(NOW(), INTERVAL 4.5 HOUR)) from log,loggerUsers where log.userMacId = loggerUsers.macId
+
+select REPLACE(name,"Anonymous",userMacId) as name,UNIX_TIMESTAMP(userLoginTime) as userLoginTime, UNIX_TIMESTAMP(REPLACE(userLogoutTime,"0000-00-00 00:00:00",NOW())) as userLogoutTime from log,loggerUsers where log.userMacId = loggerUsers.macId
