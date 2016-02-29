@@ -20,10 +20,10 @@ class Users extends CI_Controller {
             $iterator=$from;
             for($i=0; $i<=$hours;$i++)
             {
-                                $returnValues=$this->getPeopleAtTimeDateTime($iterator,$iterator);
+                                $returnValues=$this->getPeople();
                         $result['devices']=$returnValues;
-                        // $result['time']=$iterator->getTimeStamp();
-                        $result['time']=$i;
+                        // $result['time']=$i;
+                        $result['time']=$iterator->getTimeStamp();
                         $result['count']=count($result['devices']);
 			            $toReturn[]=$result;
                         $iterator->add(new DateInterval('PT1H'));
@@ -31,13 +31,9 @@ class Users extends CI_Controller {
             return($toReturn);
         }
 
-        private function getPeopleAtTimeDateTime($startTime,$endTime)
+        private function getPeople($from=24)
         {
-                $startTime->add(new DateInterval('PT4H30M'));
-                $startTime = date_format($startTime, 'Y-m-d H:i:s');
-                $endTime->add(new DateInterval('PT4H30M'));
-                $endTime = date_format($endTime, 'Y-m-d H:i:s');
-                $query = $this->db->query('select name,userMacId,userLoginTime,userLogoutTime from log,loggerUsers where log.userMacId = loggerUsers.macId and not ((\''.$startTime.'\' < userLoginTime and \''.$endTime.'\' < userLogoutTime) || (\''.$startTime.'\' > userLoginTime and \''.$endTime.'\' > userLogoutTime)) || userLogoutTime=\'0000-00-00 00:00:00\'');
+                $query = $this->db->query('select name,userMacId,userLoginTime, REPLACE(userLogoutTime,"0000-00-00 00:00:00",NOW()) from log,loggerUsers where log.userMacId = loggerUsers.macId');
                 // header('Content-Type: application/json');
                 return $query->result();
         
