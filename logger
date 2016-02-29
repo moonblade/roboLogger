@@ -1,16 +1,20 @@
 #!/bin/bash
-# /usr/bin/wget -p -R.js,.css,.gif "http://admin:p4ssword@192.168.1.1/cgi-bin/webproc?getpage=html/page.htm"
-file="page.html"
-# file="192.168.1.1/cgi-bin/webproc?getpage=html%2Fpage.htm&var:page=basic_home"
-# restAPIUrl="http://robologger.robocet.com/logger/updateData"
-restAPIUrl="http://localhost/workspace/bash/roboLogger/backend/Logger/updateData"
-outputFile="log.json"
-macListJson=$(
-/usr/bin/printf "{\n"
-/usr/bin/printf "\t\"macList\":[\n\t\t \"DU:MM:YA:DD:RE:SS\"\n"
-/usr/bin/cat $file | /usr/bin/grep -i '[0-9A-F]\{2\}\(:[0-9A-F]\{2\}\)\{5\}' | /usr/bin/cut -f1 -d. | /usr/bin/awk -F'"' '{ print "\t\t,\x22"$2"\x22" }'
-/usr/bin/printf "\t]\n}"
-)
-macListJson=$(/usr/bin/cat log.json)
-/usr/bin/rm -rf "192.168.1.1/" || /usr/bin/true
-/usr/bin/curl -v -H "Accept: application/json" -H "Content-type: application/json" -d "$macListJson" "$restAPIUrl"
+myssid=$(/sbin/iwgetid -r)
+if [[ $myssid == "Robocet" ]]
+then
+        /usr/bin/wget -p -R.js,.css,.gif "http://admin:p4ssword@192.168.1.1/cgi-bin/webproc?getpage=html/page.htm"
+        # file="page.html"
+        file="192.168.1.1/cgi-bin/webproc?getpage=html%2Fpage.htm&var:page=basic_home"
+        # restAPIUrl="http://localhost/workspace/bash/roboLogger/backend/Logger/updateData"
+        restAPIUrl="http://robologger.robocet.com/logger/updateData"
+        outputFile="log.json"
+        macListJson=$(
+        /usr/bin/printf "{\n"
+        /usr/bin/printf "\t\"macList\":[\n\t\t \"DU:MM:YA:DD:RE:SS\"\n"
+        /usr/bin/cat $file | /usr/bin/grep -i '[0-9A-F]\{2\}\(:[0-9A-F]\{2\}\)\{5\}' | /usr/bin/cut -f1 -d. | /usr/bin/awk -F'"' '{ print "\t\t,\x22"$2"\x22" }'
+        /usr/bin/printf "\t]\n}"
+        )
+        # macListJson=$(/usr/bin/cat log.json)
+        /usr/bin/rm -rf "192.168.1.1/" || /usr/bin/true
+        /usr/bin/curl -v -H "Accept: application/json" -H "Content-type: application/json" -d "$macListJson" "$restAPIUrl"
+fi

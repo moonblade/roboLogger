@@ -18,16 +18,14 @@
   
         <body>
          <?php
-            echo "<form id='form' name='form' method='post'  action=" . base_url() . "logger/getPeopleAtTimeForm>";
+            echo "<form id='form' name='form' method='post'  action=" . "logger/getPeopleAtTimeForm>";
             ?>
             <label id ="pdesc_txt">Start Date:</label>
-
             <input type="text" class="datepicker" placeholder="Start Date" name="startDate"/>
 
             <label id ="pdesc_txt">End Date:</label>
-
             <input type="text" class="datepicker" placeholder="End Date" name="endDate"/>
-          
+
             <input type="submit" name="buttonSubmit" id="submit_btn" value="Submit" onclick="">
 
             </form>

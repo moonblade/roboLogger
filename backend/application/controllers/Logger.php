@@ -73,7 +73,8 @@ class Logger extends CI_Controller {
                 $endTime->add(new DateInterval('PT4H30M'));
                 $endTime = date_format($endTime, 'Y-m-d H:i:s');
                 $query = $this->db->query('select name,userMacId,userLoginTime,userLogoutTime from log,loggerUsers where log.userMacId = loggerUsers.macId and not ((\''.$startTime.'\' < userLoginTime and \''.$endTime.'\' < userLogoutTime) || (\''.$startTime.'\' > userLoginTime and \''.$endTime.'\' > userLogoutTime))');
-                print json_encode($query->result());
+                header('Content-Type: application/json');
+                print_r(json_encode($query->result(),JSON_PRETTY_PRINT));
 
         }
 }
