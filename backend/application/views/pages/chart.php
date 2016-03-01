@@ -1,6 +1,7 @@
 <html>
 
 <head>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
     var CompleteData = [
@@ -84,11 +85,13 @@ function firstDraw() {
 </head>
 
 <body onLoad="changeName(users[0].macId)">
-    <div id="body" style="width: 100%; height: 100%;">
-        <div id="selectors" style="width: 100%; height: 5%;">
-            <div id="macChanger" style="float:left">
-            	 <form style="float:left" action="changeName">
-	            	<select name="macId" id="macSelector" style="float:left" onLoad="changeName(this.value)" onChange="changeName(this.value)">
+    <div id="body">
+    <nav class="navbar navbar-default">
+        <!-- <div id="selectors" style="width: 100%; height: 5%;"> -->
+            <div id="macChanger">
+            	 <form class="navbar-form navbar-left" action="users/changeName">
+            	 <!-- <form style="float:left" action="changeName"> -->
+	            	<select class="form-control" name="macId" id="macSelector"onLoad="changeName(this.value)" onChange="changeName(this.value)">
 			    		<?php
 			    		foreach($users as $user)
 			    		{
@@ -96,12 +99,13 @@ function firstDraw() {
 			    		}
 						?>
 	            	</select>
-				  <input id="nameSpace" style="float:left" type="text" name="name">
-				  <input style="float:left" type="submit" value="Change Name">
+				  <input id="nameSpace" class="form-control" type="text" name="name">
+				  <input class="form-control" type="submit" value="Change Name">
 				</form> 
             </div>
-            <div id="timeChanger" style="float:right">
-                <select onChange="changeTime(this.value)">
+            <form class="navbar-form navbar-left pull-right">
+            <div id="timeChanger">
+                <select class="form-control"onChange="changeTime(this.value)">
                     <!-- <option value=""></option> -->
                     <option value="1">Last hour</option>
                     <option value="2">Last 2 hours</option>
@@ -116,9 +120,11 @@ function firstDraw() {
                     <option value="730">Last Month</option>
                 </select>
             </div>
+            </form>
         </div>
-        <div id="timeline" style="width: 100%; height: 95%;"></div>
     </div>
+    </nav>
+        <div id="timeline" style="height: 100%;"></div>
 </body>
 
 </html>

@@ -15,6 +15,7 @@ class Users extends CI_Controller {
                 $name = $this->input->get('name');
         	$macId = $this->input->get('macId');
         	$this->db->update('loggerUsers',array('name'=>$name),array('macId'=>$macId));
+                // header('Location: http://robologger.robocet.com/');
                 $this->index();
         }
 
